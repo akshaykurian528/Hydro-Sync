@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "982668253740",
+    "project_id": "hydro-sync",
+    "storage_bucket": "hydro-sync.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:982668253740:android:8589b78e1bb4edf3834f89",
+        "android_client_info": {
+          "package_name": "com.example.hydro_sync"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCI_PkxlA0N-Ngei91XrHEiLCPWJo-MZAE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
