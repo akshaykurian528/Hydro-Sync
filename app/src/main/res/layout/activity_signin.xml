@@ -3,18 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg"
+    android:background="@drawable/app_background"
     android:gravity="center"
     android:orientation="vertical"
     tools:context=".MainActivity">
-
-    <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:src="@drawable/bg2" />
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
@@ -28,7 +22,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:backgroundTint="#7C0C0C"
+            android:backgroundTint="@color/black"
             android:orientation="vertical"
             android:padding="24dp">
 
@@ -39,7 +33,7 @@
                 android:layout_height="wrap_content"
                 android:text="Login"
                 android:textAlignment="center"
-                android:textColor="@color/red"
+                android:textColor="@color/blue_main"
                 android:textSize="36sp"
                 android:textStyle="bold" />
 
@@ -75,25 +69,27 @@
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:layout_marginTop="30dp"
-                android:backgroundTint="@color/red"
+                android:backgroundTint="@color/blue_main"
                 android:text="Login"
                 android:textSize="18sp"
                 app:cornerRadius="20dp" />
+
+            <TextView
+                android:id="@+id/noAccount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="3dp"
+                android:padding="8dp"
+                android:textSize="18sp"
+                android:text="Not yet registered ? SignUp Now!!"
+                android:textAlignment="center"
+                android:textColor="@color/blue_main"
+                android:textStyle="bold" />
 
         </LinearLayout>
 
     </androidx.cardview.widget.CardView>
 
-    <TextView
-        android:id="@+id/noAccount"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="3dp"
-        android:padding="8dp"
-        android:text="Not yet registered ? SignUp Now!!"
-        android:textAlignment="center"
-        android:textColor="@color/red"
-        android:textSize="22sp"
-        android:textStyle="bold" />
+
 
 </LinearLayout>

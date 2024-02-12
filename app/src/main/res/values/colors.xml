@@ -8,4 +8,6 @@
     <color name="red">#B11C39</color>
     <color name="green">#00F67E</color>
     <color name="light">#ABC7CA</color>
+    <color name="blue_main">#1089B8</color>
+    <color name="alabaster">#ECE9DF</color>
 </resources>
