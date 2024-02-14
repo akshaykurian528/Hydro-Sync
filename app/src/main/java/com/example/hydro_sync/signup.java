@@ -45,6 +45,9 @@ public class signup extends AppCompatActivity {
                 String email = binding.userEmail.getText().toString();
                 String password = binding.password.getText().toString();
                 String username = binding.userName.getText().toString();
+                String housename = binding.houseName.getText().toString();
+                String houseno = binding.houseNo.getText().toString();
+                String mobileno = binding.mobileNo.getText().toString();
 
                 // Validate email
                 if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
@@ -60,12 +63,31 @@ public class signup extends AppCompatActivity {
                     return;
                 }
 
-                // Validate username
-                if (!username.matches("[a-zA-Z]+")) {
+                if (!username.matches("[a-zA-Z ]+")) {
                     dialog.dismiss();
-                    Toast.makeText(signup.this, "Username must contain only letters", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(signup.this, "Name must contain only letters", Toast.LENGTH_SHORT).show();
                     return;
                 }
+
+                if (!housename.matches("[a-zA-Z ]+")) {
+                    dialog.dismiss();
+                    Toast.makeText(signup.this, "House name must contain only letters", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if (!houseno.matches("[a-zA-Z0-9]+")) {
+                    dialog.dismiss();
+                    Toast.makeText(signup.this, "House number must contain only letters and numbers", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if (!mobileno.matches("\\d{10}")) {
+                    dialog.dismiss();
+                    Toast.makeText(signup.this, "Mobile number must contain exactly 10 digits", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+
 
                 // Firebase authentication
                 auth.createUserWithEmailAndPassword(email, password)
@@ -77,8 +99,11 @@ public class signup extends AppCompatActivity {
                                     // If successful, save user info in Firebase database
                                     HashMap<String, Object> map = new HashMap<>();
                                     map.put("userName", username);
+                                    map.put("houseName", housename);
                                     map.put("UserEmail", email);
                                     map.put("password", password);
+                                    map.put("houseNo", houseno);
+                                    map.put("mobileNo", mobileno);
 
                                     String id = task.getResult().getUser().getUid();
 

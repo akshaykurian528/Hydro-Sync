@@ -31,7 +31,7 @@ public class signin extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding =ActivitySigninBinding.inflate(getLayoutInflater());
+        binding = ActivitySigninBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         auth = FirebaseAuth.getInstance();
@@ -45,24 +45,35 @@ public class signin extends AppCompatActivity {
         binding.btnSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String email = binding.userEmail.getText().toString();
+                String password = binding.password.getText().toString();
 
-                auth.signInWithEmailAndPassword(binding.userEmail.getText().toString(), binding.password.getText().toString())
-                        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                dialog.dismiss();
-                                if (task.isSuccessful()) {
-                                    Intent intent = new Intent(signin.this, MainActivity.class);
-                                    startActivity(intent);
-
-                                } else {
-                                    Toast.makeText(signin.this, task.getException().getLocalizedMessage(), Toast.LENGTH_SHORT).show();
-
+                // Check if user is an admin
+                if (email.equals("admin@gmail.com") && password.equals("Admin123@")) {
+                    // Admin login successful, redirect to admin activity
+                    Intent adminIntent = new Intent(signin.this, AdminActivity.class);
+                    startActivity(adminIntent);
+                    finish(); // Finish the current activity to prevent going back to the sign-in screen
+                } else {
+                    // Authenticate regular user
+                    auth.signInWithEmailAndPassword(email, password)
+                            .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                                @Override
+                                public void onComplete(@NonNull Task<AuthResult> task) {
+                                    dialog.dismiss();
+                                    if (task.isSuccessful()) {
+                                        Intent intent = new Intent(signin.this, MainActivity.class);
+                                        startActivity(intent);
+                                        finish(); // Finish the current activity
+                                    } else {
+                                        Toast.makeText(signin.this, task.getException().getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                                    }
                                 }
-                            }
-                        });
+                            });
+                }
             }
         });
+
 
         binding.noAccount.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,13 +84,6 @@ public class signin extends AppCompatActivity {
 
             }
         });
-
-//        if (currentUser != null) {
-//            Intent intent = new Intent(SignInActivity.this, MainActivity.class);
-//            startActivity(intent);
-//
-//        }
     }
-
 }
 
