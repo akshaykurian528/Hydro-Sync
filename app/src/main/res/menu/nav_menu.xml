@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:icon="@drawable/housename_ic"
+            android:id="@+id/nav_house_name"
+            android:title="House Name" />
+        <item
+            android:icon="@drawable/house_number_ic"
+            android:id="@+id/nav_house_no"
+            android:title="House Number" />
+        <item
+            android:icon="@drawable/mobile_ic"
+            android:id="@+id/nav_mobile_no"
+            android:title="Mobile Number" />
+    </group>
+
+</menu>
