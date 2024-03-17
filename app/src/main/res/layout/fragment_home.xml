@@ -1,15 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/alabaster"
-    tools:context=".home">
+    android:orientation="vertical"
+    tools:context=".MainActivity"
+    android:background="@color/white">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="80dp"
+        android:id="@+id/title_view"
+        android:textAlignment="center"
+        android:text="Water Level"
+        android:background="@color/blue_main"
+        android:fontFamily="@font/proteststrikeregular"
+        android:layout_centerHorizontal="true"
+        android:textStyle="italic"
+        android:textColor="@color/white"
+        android:textSize="35sp"
+        android:gravity="center_vertical" />
 
-</FrameLayout>
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="369dp"
+        android:layout_height="465dp"
+        android:layout_centerInParent="true"
+        android:src="@drawable/water_tank_ic" />
+
+    <TextView
+        android:id="@+id/level"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:textSize="35dp"
+        android:text="water level"
+        android:layout_centerInParent="true" />
+
+</RelativeLayout>
