@@ -2,6 +2,8 @@ package com.example.hydro_sync;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.PopupMenu;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
@@ -13,7 +15,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,6 +25,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
     DrawerLayout drawerLayout;
     TextView userNameTextView;
     TextView userEmailTextView;
+    Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +54,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
         replaceFragment(new home());
         binding.bottomNavigationView.setSelectedItemId(R.id.menuhome);
+
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         binding.bottomNavigationView.setOnItemSelectedListener(item -> {
             if (item.getItemId() == R.id.menuprofile) {
@@ -66,8 +75,22 @@ public class MainActivity extends AppCompatActivity {
         userNameTextView = headerView.findViewById(R.id.userNameTextView);
         userEmailTextView = headerView.findViewById(R.id.userEmailTextView);
 
-        // Set up navigation drawer header
         setupNavigationDrawerHeader();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.customer_support, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.customer_support) {
+            showPopupMenu(findViewById(R.id.customer_support)); // Pass the view of the selected menu item
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
 
@@ -102,7 +125,6 @@ public class MainActivity extends AppCompatActivity {
 
                         userNameTextView.setText(userName);
 
-                        // Update navigation drawer menu items with user details
                         NavigationView navigationView = findViewById(R.id.nav_view);
                         Menu menu = navigationView.getMenu();
                         MenuItem houseNameItem = menu.findItem(R.id.nav_house_name);
@@ -122,9 +144,6 @@ public class MainActivity extends AppCompatActivity {
             });
         }
     }
-
-
-
 
     private void showBottomSheet() {
         final Dialog dialog = new Dialog(this);
@@ -167,4 +186,35 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
         finish();
     }
+
+    private void showPopupMenu(View anchorView) {
+        PopupMenu popupMenu = new PopupMenu(this, anchorView);
+        popupMenu.inflate(R.menu.customer_support_popup);
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                if (item.getItemId() == R.id.menu_call) {
+                    // Intent to dialpad with number 8138890474
+                    Intent intent = new Intent(Intent.ACTION_DIAL);
+                    intent.setData(Uri.parse("tel:8138890474"));
+                    startActivity(intent);
+                    return true;
+                } else if (item.getItemId() == R.id.menu_email) {
+                    // Intent to compose email with email support@dsdc.com using Gmail
+                    Intent intent = new Intent(Intent.ACTION_SENDTO);
+                    intent.setData(Uri.parse("mailto:hydrosyncsupport@gmail.com"));
+                    intent.putExtra(Intent.EXTRA_SUBJECT, "Subject");
+                    startActivity(Intent.createChooser(intent, "Send Email"));
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        });
+
+        popupMenu.show();
+    }
+
+
+
 }

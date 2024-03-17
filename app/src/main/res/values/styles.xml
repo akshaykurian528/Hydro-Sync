@@ -1,3 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <style name="ToolbarTitleStyle" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <!-- Set your desired font -->
+        <item name="fontFamily">@font/proteststrikeregular</item>
+        <!-- Set your desired color -->
+        <item name="android:textColor">@color/white</item>
+    </style>
 </resources>

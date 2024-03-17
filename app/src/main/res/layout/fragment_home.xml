@@ -8,20 +8,6 @@
     tools:context=".MainActivity"
     android:background="@color/white">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:id="@+id/title_view"
-        android:textAlignment="center"
-        android:text="Water Level"
-        android:background="@color/blue_main"
-        android:fontFamily="@font/proteststrikeregular"
-        android:layout_centerHorizontal="true"
-        android:textStyle="italic"
-        android:textColor="@color/white"
-        android:textSize="35sp"
-        android:gravity="center_vertical" />
-
     <ImageView
         android:id="@+id/imageView3"
         android:layout_width="369dp"

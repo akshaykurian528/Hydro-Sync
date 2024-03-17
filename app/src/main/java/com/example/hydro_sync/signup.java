@@ -87,9 +87,6 @@ public class signup extends AppCompatActivity {
                     return;
                 }
 
-
-
-                // Firebase authentication
                 auth.createUserWithEmailAndPassword(email, password)
                         .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                             @Override
@@ -97,17 +94,20 @@ public class signup extends AppCompatActivity {
                                 dialog.dismiss();
                                 if (task.isSuccessful()) {
                                     // If successful, save user info in Firebase database
-                                    HashMap<String, Object> map = new HashMap<>();
-                                    map.put("userName", username);
-                                    map.put("houseName", housename);
-                                    map.put("UserEmail", email);
-                                    map.put("password", password);
-                                    map.put("houseNo", houseno);
-                                    map.put("mobileNo", mobileno);
-
                                     String id = task.getResult().getUser().getUid();
 
-                                    database.getReference().child("users").child(id).setValue(map);
+                                    // Create a HashMap to hold user data including the "request" field
+                                    HashMap<String, Object> userData = new HashMap<>();
+                                    userData.put("userName", username);
+                                    userData.put("houseName", housename);
+                                    userData.put("UserEmail", email);
+                                    userData.put("password", password);
+                                    userData.put("houseNo", houseno);
+                                    userData.put("mobileNo", mobileno);
+                                    userData.put("request", "");
+
+                                    // Save user data to Firebase under "users" node
+                                    database.getReference().child("users").child(id).setValue(userData);
 
                                     // Move to Sign-in activity
                                     Intent intent = new Intent(signup.this, signin.class);

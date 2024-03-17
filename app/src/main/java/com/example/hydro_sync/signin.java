@@ -10,14 +10,15 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.hydro_sync.databinding.ActivitySigninBinding;
-
 import com.google.android.gms.tasks.OnCompleteListener;
-
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class signin extends AppCompatActivity {
 
@@ -26,7 +27,6 @@ public class signin extends AppCompatActivity {
     FirebaseDatabase database;
     ProgressDialog dialog;
     FirebaseUser currentUser;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,8 +39,8 @@ public class signin extends AppCompatActivity {
         database = FirebaseDatabase.getInstance();
 
         dialog = new ProgressDialog(signin.this);
-        dialog.setTitle("Create your account");
-        dialog.setMessage("your account is creating");
+        dialog.setTitle("Signing in");
+        dialog.setMessage("Please wait...");
 
         binding.btnSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -48,25 +48,21 @@ public class signin extends AppCompatActivity {
                 String email = binding.userEmail.getText().toString();
                 String password = binding.password.getText().toString();
 
-                // Check if user is an admin
                 if (email.equals("admin@gmail.com") && password.equals("Admin123@")) {
                     // Admin login successful, redirect to admin activity
                     Intent adminIntent = new Intent(signin.this, AdminActivity.class);
                     startActivity(adminIntent);
-                    finish(); // Finish the current activity to prevent going back to the sign-in screen
+                    finish();
                 } else {
-                    // Authenticate regular user
                     auth.signInWithEmailAndPassword(email, password)
                             .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                                 @Override
                                 public void onComplete(@NonNull Task<AuthResult> task) {
                                     dialog.dismiss();
                                     if (task.isSuccessful()) {
-                                        Intent intent = new Intent(signin.this, MainActivity.class);
-                                        startActivity(intent);
-                                        finish(); // Finish the current activity
+                                        checkRequestStatus();
                                     } else {
-                                        Toast.makeText(signin.this, task.getException().getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(signin.this, "Sign in failed: " + task.getException().getLocalizedMessage(), Toast.LENGTH_SHORT).show();
                                     }
                                 }
                             });
@@ -74,16 +70,39 @@ public class signin extends AppCompatActivity {
             }
         });
 
-
         binding.noAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(signin.this, signup.class);
                 startActivity(intent);
-
-
             }
         });
     }
-}
 
+    private void checkRequestStatus() {
+        String userId = auth.getCurrentUser().getUid();
+        database.getReference().child("users").child(userId).child("request")
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        String requestStatus = dataSnapshot.getValue(String.class);
+                        if (requestStatus != null && requestStatus.equals("accepted")) {
+                            // Redirect to MainActivity
+                            Intent intent = new Intent(signin.this, MainActivity.class);
+                            startActivity(intent);
+                            finish(); // Finish the current activity
+                        } else {
+                            // Redirect to Request activity
+                            Intent intent = new Intent(signin.this, Request.class);
+                            startActivity(intent);
+                            finish(); // Finish the current activity
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        // Handle error
+                    }
+                });
+    }
+}
