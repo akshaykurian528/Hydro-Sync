@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="75dp"
+    android:layout_marginTop="10dp"
+    android:background="@color/blue_main"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <ImageView
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:id="@+id/imageview"
+        android:layout_marginRight="10dp"
+        android:layout_centerVertical="true"
+        android:background="@drawable/user_ic"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/user_name"
+        android:layout_toEndOf="@id/imageview"
+        android:textColor="@color/white"
+        android:fontFamily="@font/karataicvariabefontwght"
+        tools:text="Name"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/house_no"
+        android:layout_toEndOf="@id/imageview"
+        android:layout_below="@id/user_name"
+        android:textColor="@color/white"
+        android:fontFamily="@font/karataicvariabefontwght"
+        tools:text="TB501"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/house_name"
+        android:layout_toEndOf="@id/imageview"
+        android:layout_below="@id/house_no"
+        android:textColor="@color/white"
+        android:fontFamily="@font/karataicvariabefontwght"
+        tools:text="Ruby Residence"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/mobile_no"
+        android:layout_toEndOf="@id/imageview"
+        android:layout_below="@id/house_name"
+        android:textColor="@color/white"
+        android:fontFamily="@font/karataicvariabefontwght"
+        tools:text="7025091701"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/approve_button"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:backgroundTint="@color/white"
+        android:textColor="@color/blue_main"
+        android:text="Approve"/>
+
+
+
+</RelativeLayout>

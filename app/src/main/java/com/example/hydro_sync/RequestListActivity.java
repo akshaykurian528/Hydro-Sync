@@ -1,16 +1,11 @@
 package com.example.hydro_sync;
 
-import android.os.Bundle;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.os.Bundle;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -20,31 +15,27 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-public class RequestsFragment extends Fragment {
+public class RequestListActivity extends AppCompatActivity {
 
     RecyclerView recyclerView;
     DatabaseReference database;
     RequestAdapter myAdapter;
     ArrayList<UserRequests> list;
 
-    @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_requests, container, false);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.fragment_requests);
 
-        recyclerView = rootView.findViewById(R.id.requestList);
-        if (recyclerView == null) {
-            Log.e("RequestsFragment", "RecyclerView is null!");
-        }
-
+        recyclerView = findViewById(R.id.requestList);
+        database = FirebaseDatabase.getInstance().getReference("Users");
         recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         list = new ArrayList<>();
-        myAdapter = new RequestAdapter(getActivity(), list);
+        myAdapter = new RequestAdapter(this, list);
         recyclerView.setAdapter(myAdapter);
 
-        database = FirebaseDatabase.getInstance().getReference("users");
         database.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -61,8 +52,5 @@ public class RequestsFragment extends Fragment {
                 // Handle onCancelled
             }
         });
-
-        return rootView;
     }
-
 }
