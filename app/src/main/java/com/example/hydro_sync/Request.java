@@ -3,11 +3,14 @@ package com.example.hydro_sync;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -22,8 +25,8 @@ public class Request extends AppCompatActivity {
     private boolean isButtonOn = false; // Declare isButtonOn variable here
     private FirebaseAuth mAuth;
     private DatabaseReference mDatabase;
+    private BottomNavigationView bottomNavigationView;
 
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_request);
@@ -32,7 +35,19 @@ public class Request extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance().getReference().child("users");
 
-        // Fetch "request" field value from the database and set button state accordingly
+        bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                if (item.getItemId() == R.id.log_out) {
+                    logout();
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        });
+
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser != null) {
             String userId = currentUser.getUid();
@@ -57,11 +72,9 @@ public class Request extends AppCompatActivity {
     }
 
     public void toggleButtonState(View view) {
-        isButtonOn = !isButtonOn; // Toggle the state
+        isButtonOn = !isButtonOn;
         updateButton();
         showToast();
-
-        // Update the "request" field in the database
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser != null) {
             String userId = currentUser.getUid();
@@ -84,5 +97,12 @@ public class Request extends AppCompatActivity {
         } else {
             Toast.makeText(this, "Request canceled", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void logout() {
+        FirebaseAuth.getInstance().signOut();
+        Toast.makeText(Request.this, "Logout Successfully", Toast.LENGTH_SHORT).show();
+        startActivity(new Intent(Request.this, signin.class));
+        finish();
     }
 }
