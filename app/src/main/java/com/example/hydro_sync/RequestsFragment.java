@@ -51,10 +51,20 @@ public class RequestsFragment extends Fragment {
                 list.clear(); // Clear the list before adding new items
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     UserRequests request = dataSnapshot.getValue(UserRequests.class);
-                    list.add(request);
+                    String userId = dataSnapshot.getKey(); // Get the userId from the snapshot
+                    // Set the userId for the UserRequests object
+                    if (request != null) {
+                        request.setUserId(userId);
+                    }
+                    // Check if the request field is equal to "send"
+                    if (request != null && "send".equals(request.getRequest())) {
+                        list.add(request);
+                    }
                 }
                 myAdapter.notifyDataSetChanged();
             }
+
+
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {

@@ -1,7 +1,7 @@
 package com.example.hydro_sync;
 
 public class UserRequests {
-    private String userName,houseNo,houseName,mobileNo;
+    private String userName,houseNo,houseName,mobileNo,request,userId;
 
     public UserRequests() {
         // Default constructor required for calls to DataSnapshot.getValue(UserRequest.class)
@@ -37,5 +37,21 @@ public class UserRequests {
 
     public void mobileNo(String mobileNo) {
         this.mobileNo = mobileNo;
+    }
+
+    public String getRequest() {
+        return request;
+    }
+
+    public void setRequest(String request) {
+        this.request = request;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 }
