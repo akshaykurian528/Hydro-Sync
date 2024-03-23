@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="80dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginTop="10dp"
+    android:layout_marginStart="10dp"
+    android:layout_marginEnd="10dp"
+    android:background="@drawable/approve_button_border"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <ImageView
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:id="@+id/imageview"
+        android:layout_marginRight="10dp"
+        android:layout_marginStart="8dp"
+        android:layout_centerVertical="true"
+        android:background="@drawable/user_ic"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="7dp"
+        android:layout_marginStart="8dp"
+        android:id="@+id/user_name"
+        android:layout_toEndOf="@id/imageview"
+        android:textColor="@color/white"
+        android:fontFamily="@font/karataicvariabefontwght"
+        tools:text="Name"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginStart="8dp"
+        android:id="@+id/house_no"
+        android:layout_toEndOf="@id/imageview"
+        android:layout_below="@id/user_name"
+        android:textColor="@color/white"
+        android:fontFamily="@font/karataicvariabefontwght"
+        tools:text="TB501"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginStart="8dp"
+        android:id="@+id/house_name"
+        android:layout_toEndOf="@id/imageview"
+        android:layout_below="@id/house_no"
+        android:textColor="@color/white"
+        android:fontFamily="@font/karataicvariabefontwght"
+        tools:text="Ruby Residence"/>
+
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="12dp"
+        android:id="@+id/status_button"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:drawableLeft="@drawable/active_ic"
+        android:backgroundTint="@color/white"
+        android:textColor="@color/blue_main"
+        app:cornerRadius="5dp"
+        android:fontFamily="@font/karataicvariabefontwght"
+        android:text="Status"/>
+
+
+
+</RelativeLayout>

@@ -104,6 +104,7 @@ public class signup extends AppCompatActivity {
                                     userData.put("password", password);
                                     userData.put("houseNo", houseno);
                                     userData.put("mobileNo", mobileno);
+                                    userData.put("level",-1);
                                     userData.put("request", "");
 
                                     // Save user data to Firebase under "users" node

@@ -18,10 +18,10 @@ import com.google.firebase.database.ValueEventListener;
 
 public class home extends Fragment {
 
-    // Declare TextView for displaying level
-    private TextView levelTextView;
+    // Declare WaveProgressBar
+    private WaveProgressBar waveProgressBar;
     private DatabaseReference levelRef;
-    private ValueEventListener valueEventListener; // Declare ValueEventListener
+    private ValueEventListener valueEventListener;
 
     public home() {
         // Required empty public constructor
@@ -33,8 +33,8 @@ public class home extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
-        // Initialize TextView
-        levelTextView = view.findViewById(R.id.level);
+        // Initialize WaveProgressBar
+        waveProgressBar = view.findViewById(R.id.waveProgressBar);
 
         // Retrieve Firebase user
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -50,13 +50,14 @@ public class home extends Fragment {
                         // Retrieve level data from Firebase
                         Long levelLong = dataSnapshot.getValue(Long.class);
                         if (levelLong != null) {
-                            // Convert Long to String
-                            String level = String.valueOf(levelLong);
-                            // Update TextView with level data
-                            levelTextView.setText(level + " %"); // Add percentage symbol
+                            // Convert Long to int
+                            int level = levelLong.intValue();
+                            // Set level value to WaveProgressBar using setLevelProgress method
+                            waveProgressBar.setLevelProgress(level);
                         }
                     }
                 }
+
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError databaseError) {
