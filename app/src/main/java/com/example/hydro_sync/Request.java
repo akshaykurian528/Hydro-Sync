@@ -3,13 +3,16 @@ package com.example.hydro_sync;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -69,6 +72,14 @@ public class Request extends AppCompatActivity {
                 }
             });
         }
+
+
+
+        ImageView gifImageView = findViewById(R.id.gifImageView);
+        Glide.with(this)
+                .asGif()
+                .load(R.drawable.get_service)
+                .into(gifImageView);
     }
 
     public void toggleButtonState(View view) {
@@ -86,8 +97,10 @@ public class Request extends AppCompatActivity {
     private void updateButton() {
         if (isButtonOn) {
             myButton.setText("Cancel Request");
+            myButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.cancel_send, 0, 0, 0);
         } else {
             myButton.setText("Send Request");
+            myButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.send_ic, 0, 0, 0);
         }
     }
 
