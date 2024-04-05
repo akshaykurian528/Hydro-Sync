@@ -106,6 +106,9 @@ public class signup extends AppCompatActivity {
                                     userData.put("mobileNo", mobileno);
                                     userData.put("level",-1);
                                     userData.put("request", "");
+                                    userData.put("pumpstatus", "Off");
+                                    userData.put("switch", "Off");
+                                    userData.put("mode", "Manual");
 
                                     // Save user data to Firebase under "users" node
                                     database.getReference().child("users").child(id).setValue(userData);
