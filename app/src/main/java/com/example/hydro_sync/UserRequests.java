@@ -1,7 +1,10 @@
 package com.example.hydro_sync;
 
+import android.location.Location;
+
 public class UserRequests {
     private String userName,houseNo,houseName,mobileNo,request,userId;
+    private Location location;
 
     public UserRequests() {
         // Default constructor required for calls to DataSnapshot.getValue(UserRequest.class)
@@ -54,4 +57,38 @@ public class UserRequests {
     public void setUserId(String userId) {
         this.userId = userId;
     }
+
+    public Location getLocation() {
+        return location;
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
+    }
+
+    public static class Location {
+        private double latitude;
+        private double longitude;
+
+        public Location() {
+            // Default constructor required for calls to DataSnapshot.getValue(Location.class)
+        }
+
+        public double getLatitude() {
+            return latitude;
+        }
+
+        public void setLatitude(double latitude) {
+            this.latitude = latitude;
+        }
+
+        public double getLongitude() {
+            return longitude;
+        }
+
+        public void setLongitude(double longitude) {
+            this.longitude = longitude;
+        }
+    }
+
 }

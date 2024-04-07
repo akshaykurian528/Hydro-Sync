@@ -110,6 +110,11 @@ public class signup extends AppCompatActivity {
                                     userData.put("switch", "Off");
                                     userData.put("mode", "Manual");
 
+                                    HashMap<String, Double> locationData = new HashMap<>();
+                                    locationData.put("latitude", 0.0);
+                                    locationData.put("longitude", 0.0);
+                                    userData.put("location", locationData);
+
                                     // Save user data to Firebase under "users" node
                                     database.getReference().child("users").child(id).setValue(userData);
 
