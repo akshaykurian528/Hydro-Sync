@@ -45,28 +45,7 @@ public class signin extends AppCompatActivity {
         binding.btnSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String email = binding.userEmail.getText().toString();
-                String password = binding.password.getText().toString();
-
-                if (email.equals("admin@gmail.com") && password.equals("Admin123@")) {
-                    // Admin login successful, redirect to admin activity
-                    Intent adminIntent = new Intent(signin.this, AdminActivity.class);
-                    startActivity(adminIntent);
-                    finish();
-                } else {
-                    auth.signInWithEmailAndPassword(email, password)
-                            .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                                @Override
-                                public void onComplete(@NonNull Task<AuthResult> task) {
-                                    dialog.dismiss();
-                                    if (task.isSuccessful()) {
-                                        checkRequestStatus();
-                                    } else {
-                                        Toast.makeText(signin.this, "Sign in failed: " + task.getException().getLocalizedMessage(), Toast.LENGTH_SHORT).show();
-                                    }
-                                }
-                            });
-                }
+                performSignIn();
             }
         });
 
@@ -77,7 +56,54 @@ public class signin extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        // Setup forgot password click listener
+        binding.forgotPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(signin.this, ForgotPassword.class);
+                startActivity(intent);
+            }
+        });
     }
+
+    private void performSignIn() {
+        String email = binding.userEmail.getText().toString();
+        String password = binding.password.getText().toString();
+        dialog.show();
+
+        if (email.isEmpty()) {
+            dialog.dismiss();
+            binding.userEmail.setError("Email cannot be empty");
+            return;
+        }
+
+        if (password.isEmpty()) {
+            dialog.dismiss();
+            binding.password.setError("Password cannot be empty");
+            return;
+        }
+
+        if (email.equals("admin@gmail.com") && password.equals("Admin123@")) {
+            Intent adminIntent = new Intent(signin.this, AdminActivity.class);
+            startActivity(adminIntent);
+            finish();
+        } else {
+            auth.signInWithEmailAndPassword(email, password)
+                    .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            dialog.dismiss();
+                            if (task.isSuccessful()) {
+                                checkRequestStatus();
+                            } else {
+                                Toast.makeText(signin.this, "Sign in failed: " + task.getException().getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+        }
+    }
+
 
     private void checkRequestStatus() {
         String userId = auth.getCurrentUser().getUid();

@@ -44,7 +44,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="354dp"
+                android:layout_height="373dp"
                 android:layout_gravity="center"
                 android:backgroundTint="@color/black"
                 android:orientation="vertical"
@@ -59,8 +59,8 @@
                     android:background="@drawable/login"
                     android:drawableLeft="@drawable/baseline_email_24"
                     android:drawablePadding="8dp"
-                    android:hint="Email"
                     android:fontFamily="@font/karataicvariabefontwght"
+                    android:hint="Email"
                     android:padding="8dp"
                     android:textColor="@color/black"
                     android:textColorHighlight="@color/cardview_dark_background" />
@@ -72,8 +72,8 @@
                     android:layout_marginTop="20dp"
                     android:background="@drawable/login"
                     android:drawableLeft="@drawable/baseline_lock_24"
-                    android:fontFamily="@font/karataicvariabefontwght"
                     android:drawablePadding="8dp"
+                    android:fontFamily="@font/karataicvariabefontwght"
                     android:hint="Password"
                     android:inputType="textPassword"
                     android:padding="8dp"
@@ -98,13 +98,25 @@
                         app:cornerRadius="20dp" />
 
                     <TextView
-                        android:id="@+id/noAccount"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:id="@+id/forgot_password"
+                        android:layout_width="192dp"
+                        android:layout_height="wrap_content"
                         android:layout_marginBottom="3dp"
                         android:fontFamily="@font/karataicvariabefontwght"
-                        android:padding="8dp"
+                        android:padding="9dp"
+                        android:text="Forgot Password"
+                        android:textAlignment="center"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/noAccount"
+                        android:layout_width="290dp"
+                        android:layout_height="25dp"
+                        android:fontFamily="@font/karataicvariabefontwght"
                         android:text="Dont have a Account? Register"
+                        android:layout_marginTop="15dp"
                         android:textAlignment="center"
                         android:textColor="@color/black"
                         android:textSize="16sp"

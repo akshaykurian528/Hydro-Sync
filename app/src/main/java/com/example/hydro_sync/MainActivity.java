@@ -1,21 +1,16 @@
 package com.example.hydro_sync;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.PopupMenu;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-
 import android.app.Dialog;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -25,9 +20,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.LinearLayout;
-import android.widget.PopupWindow;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.hydro_sync.databinding.ActivityMainBinding;
 import com.google.android.material.navigation.NavigationView;
@@ -46,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
     TextView userNameTextView;
     TextView userEmailTextView;
     Toolbar toolbar;
+    private static final String CHANNEL_ID = "MyNotificationChannel";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,22 +84,123 @@ public class MainActivity extends AppCompatActivity {
         userEmailTextView = headerView.findViewById(R.id.userEmailTextView);
 
         setupNavigationDrawerHeader();
+
+        // Create notification upon user login
+        createNotification();
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.customer_support, menu);
-        return true;
-    }
+    private void createNotification() {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("users").child(user.getUid());
+            userRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        Integer level = dataSnapshot.child("level").getValue(Integer.class);
+                        String mode = dataSnapshot.child("mode").getValue(String.class);
+                        String switchstatus = dataSnapshot.child("switch").getValue(String.class);
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.customer_support) {
-            showPopupMenu(findViewById(R.id.customer_support)); // Pass the view of the selected menu item
-            return true;
+                        // Check conditions for low field level and switch off
+                        if (level != null && level < 30 && "Manual".equals(mode) && "Off".equals(switchstatus)) {
+                            // Conditions met, proceed to create low level notification
+                            createLowLevelNotification();
+                        }
+
+                        // Check conditions for high field level and switch on
+                        if (level != null && level > 80 && "Manual".equals(mode) && "On".equals(switchstatus)) {
+                            // Conditions met, proceed to create high level notification
+                            createHighLevelNotification();
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    Log.e("MainActivity", "Database Error: " + databaseError.getMessage());
+                }
+            });
         }
-        return super.onOptionsItemSelected(item);
     }
+
+    private void createLowLevelNotification() {
+        // Check if the notification has already been shown
+        if (!isNotificationAlreadyShown("low_level_notification")) {
+            // Create notification for low field level
+            NotificationManagerCompat notificationManager = NotificationManagerCompat.from(MainActivity.this);
+
+            // Create Notification Channel for Android Oreo and above
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                NotificationChannel channel = new NotificationChannel(CHANNEL_ID, "My Notification Channel", NotificationManager.IMPORTANCE_DEFAULT);
+                notificationManager.createNotificationChannel(channel);
+            }
+
+            // Create MainActivity Intent
+            Intent mainIntent = new Intent(MainActivity.this, MainActivity.class);
+            // Add extra to indicate the action
+            mainIntent.putExtra("action", "low_level_notification");
+            PendingIntent mainPendingIntent = PendingIntent.getActivity(MainActivity.this, 0, mainIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+            // Create Notification
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(MainActivity.this, CHANNEL_ID)
+                    .setSmallIcon(R.drawable.notification_ic)
+                    .setContentTitle("Low Water Level")
+                    .setContentText("Your Water tank level is less than 30%")
+                    .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                    .setContentIntent(mainPendingIntent) // Set the PendingIntent for MainActivity
+                    .setAutoCancel(true); // Automatically removes the notification when tapped
+
+            // Show Notification
+            notificationManager.notify(1, builder.build());
+        }
+    }
+
+    private void createHighLevelNotification() {
+        // Check if the notification has already been shown
+        if (!isNotificationAlreadyShown("high_level_notification")) {
+            // Create notification for high field level
+            NotificationManagerCompat notificationManager = NotificationManagerCompat.from(MainActivity.this);
+
+            // Create Notification Channel for Android Oreo and above
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                NotificationChannel channel = new NotificationChannel(CHANNEL_ID, "My Notification Channel", NotificationManager.IMPORTANCE_DEFAULT);
+                notificationManager.createNotificationChannel(channel);
+            }
+
+            // Create MainActivity Intent
+            Intent mainIntent = new Intent(MainActivity.this, MainActivity.class);
+            // Add extra to indicate the action
+            mainIntent.putExtra("action", "high_level_notification");
+            PendingIntent mainPendingIntent = PendingIntent.getActivity(MainActivity.this, 0, mainIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+            // Create Notification
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(MainActivity.this, CHANNEL_ID)
+                    .setSmallIcon(R.drawable.notification_ic)
+                    .setContentTitle("Pump Switch off Alert")
+                    .setContentText("Your Water tank is about to get filled")
+                    .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                    .setContentIntent(mainPendingIntent) // Set the PendingIntent for MainActivity
+                    .setAutoCancel(true); // Automatically removes the notification when tapped
+
+            // Show Notification
+            notificationManager.notify(2, builder.build());
+        }
+    }
+
+    // Check if the notification has already been shown
+    private boolean isNotificationAlreadyShown(String action) {
+        Intent intent = getIntent();
+        if (intent != null && intent.hasExtra("action")) {
+            String extra = intent.getStringExtra("action");
+            return extra != null && extra.equals(action);
+        }
+        return false;
+    }
+
+
+
+
+
 
 
     private void setupNavigationDrawerHeader() {
@@ -214,7 +323,4 @@ public class MainActivity extends AppCompatActivity {
 
         popupMenu.show();
     }
-
-
-
 }

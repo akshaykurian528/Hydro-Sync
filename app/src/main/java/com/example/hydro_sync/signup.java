@@ -49,43 +49,83 @@ public class signup extends AppCompatActivity {
                 String houseno = binding.houseNo.getText().toString();
                 String mobileno = binding.mobileNo.getText().toString();
 
-                // Validate email
-                if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                if (username.isEmpty()) {
                     dialog.dismiss();
-                    Toast.makeText(signup.this, "Invalid email format", Toast.LENGTH_SHORT).show();
+                    binding.userName.setError("Name cannot be empty");
                     return;
                 }
 
-                // Validate password
-                if (password.length() < 8 || !password.matches(".*[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>\\/?].*")) {
+                if (houseno.isEmpty()) {
                     dialog.dismiss();
-                    Toast.makeText(signup.this, "Password must be at least 8 characters long and contain a special character", Toast.LENGTH_SHORT).show();
+                    binding.houseNo.setError("House number cannot be empty");
+                    return;
+                }
+
+                if (housename.isEmpty()) {
+                    dialog.dismiss();
+                    binding.houseName.setError("House name cannot be empty");
+                    return;
+                }
+
+                if (mobileno.isEmpty()) {
+                    dialog.dismiss();
+                    binding.mobileNo.setError("Mobile number cannot be empty");
+                    return;
+                }
+
+                if (email.isEmpty()) {
+                    dialog.dismiss();
+                    binding.userEmail.setError("Email cannot be empty");
+                    return;
+                }
+
+                if (password.isEmpty()) {
+                    dialog.dismiss();
+                    binding.password.setError("Password cannot be empty");
                     return;
                 }
 
                 if (!username.matches("[a-zA-Z ]+")) {
                     dialog.dismiss();
-                    Toast.makeText(signup.this, "Name must contain only letters", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
-                if (!housename.matches("[a-zA-Z ]+")) {
-                    dialog.dismiss();
-                    Toast.makeText(signup.this, "House name must contain only letters", Toast.LENGTH_SHORT).show();
+                    binding.userName.setError("Name must contain only letters");
                     return;
                 }
 
                 if (!houseno.matches("[a-zA-Z0-9]+")) {
                     dialog.dismiss();
-                    Toast.makeText(signup.this, "House number must contain only letters and numbers", Toast.LENGTH_SHORT).show();
+                    binding.houseNo.setError("House number must contain only letters and numbers");
                     return;
                 }
 
-                if (!mobileno.matches("\\d{10}")) {
+                if (!housename.matches("[a-zA-Z ]+")) {
                     dialog.dismiss();
-                    Toast.makeText(signup.this, "Mobile number must contain exactly 10 digits", Toast.LENGTH_SHORT).show();
+                    binding.houseName.setError("House name must contain only letters");
                     return;
                 }
+
+
+                if (!mobileno.matches("\\d{10}")) {
+                    dialog.dismiss();
+                    binding.mobileNo.setError("Mobile number must contain exactly 10 digits");
+                    return;
+                }
+
+
+                if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                    dialog.dismiss();
+                    binding.userEmail.setError("Invalid email format");
+                    return;
+                }
+
+
+                if (password.length() < 8
+                        || !password.matches(".*[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>/\\?].*")
+                        || !password.matches(".*[A-Z].*")) {
+                    dialog.dismiss();
+                    binding.password.setError("Password must be at least 8 characters long, contain a special character, and include at least one uppercase letter");
+                    return;
+                }
+
 
                 auth.createUserWithEmailAndPassword(email, password)
                         .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -93,10 +133,10 @@ public class signup extends AppCompatActivity {
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 dialog.dismiss();
                                 if (task.isSuccessful()) {
-                                    // If successful, save user info in Firebase database
+
                                     String id = task.getResult().getUser().getUid();
 
-                                    // Create a HashMap to hold user data including the "request" field
+
                                     HashMap<String, Object> userData = new HashMap<>();
                                     userData.put("userName", username);
                                     userData.put("houseName", housename);
