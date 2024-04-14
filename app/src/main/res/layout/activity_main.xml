@@ -63,6 +63,6 @@
         app:itemIconTint="@color/blue_main"
         app:itemTextColor="@color/blue_main"
         app:menu="@menu/nav_menu"
-        tools:layout_editor_absoluteX="1dp" />
+        tools:layout_editor_absoluteX="1dp"/>
 
 </androidx.drawerlayout.widget.DrawerLayout>

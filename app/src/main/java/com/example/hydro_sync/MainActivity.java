@@ -71,6 +71,8 @@ public class MainActivity extends AppCompatActivity {
                 drawerLayout.openDrawer(GravityCompat.START);
             } else if (item.getItemId() == R.id.menuhome) {
                 replaceFragment(new home());
+            }else if (item.getItemId() == R.id.menumenu) {
+                replaceFragment(new MenuFragment());
             } else if (item.getItemId() == R.id.menusettings) {
                 showBottomSheet();
             }
@@ -296,31 +298,4 @@ public class MainActivity extends AppCompatActivity {
         finish();
     }
 
-    private void showPopupMenu(View anchorView) {
-        PopupMenu popupMenu = new PopupMenu(this, anchorView);
-        popupMenu.inflate(R.menu.customer_support_popup);
-        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                if (item.getItemId() == R.id.menu_call) {
-                    // Intent to dialpad with number 8138890474
-                    Intent intent = new Intent(Intent.ACTION_DIAL);
-                    intent.setData(Uri.parse("tel:8138890474"));
-                    startActivity(intent);
-                    return true;
-                } else if (item.getItemId() == R.id.menu_email) {
-                    // Intent to compose email with email support@dsdc.com using Gmail
-                    Intent intent = new Intent(Intent.ACTION_SENDTO);
-                    intent.setData(Uri.parse("mailto:hydrosyncsupport@gmail.com"));
-                    intent.putExtra(Intent.EXTRA_SUBJECT, "Subject");
-                    startActivity(Intent.createChooser(intent, "Send Email"));
-                    return true;
-                } else {
-                    return false;
-                }
-            }
-        });
-
-        popupMenu.show();
-    }
 }

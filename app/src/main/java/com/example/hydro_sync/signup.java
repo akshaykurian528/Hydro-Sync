@@ -55,39 +55,15 @@ public class signup extends AppCompatActivity {
                     return;
                 }
 
-                if (houseno.isEmpty()) {
-                    dialog.dismiss();
-                    binding.houseNo.setError("House number cannot be empty");
-                    return;
-                }
-
-                if (housename.isEmpty()) {
-                    dialog.dismiss();
-                    binding.houseName.setError("House name cannot be empty");
-                    return;
-                }
-
-                if (mobileno.isEmpty()) {
-                    dialog.dismiss();
-                    binding.mobileNo.setError("Mobile number cannot be empty");
-                    return;
-                }
-
-                if (email.isEmpty()) {
-                    dialog.dismiss();
-                    binding.userEmail.setError("Email cannot be empty");
-                    return;
-                }
-
-                if (password.isEmpty()) {
-                    dialog.dismiss();
-                    binding.password.setError("Password cannot be empty");
-                    return;
-                }
-
                 if (!username.matches("[a-zA-Z ]+")) {
                     dialog.dismiss();
                     binding.userName.setError("Name must contain only letters");
+                    return;
+                }
+
+                if (houseno.isEmpty()) {
+                    dialog.dismiss();
+                    binding.houseNo.setError("House number cannot be empty");
                     return;
                 }
 
@@ -97,12 +73,23 @@ public class signup extends AppCompatActivity {
                     return;
                 }
 
+                if (housename.isEmpty()) {
+                    dialog.dismiss();
+                    binding.houseName.setError("House name cannot be empty");
+                    return;
+                }
+
                 if (!housename.matches("[a-zA-Z ]+")) {
                     dialog.dismiss();
                     binding.houseName.setError("House name must contain only letters");
                     return;
                 }
 
+                if (mobileno.isEmpty()) {
+                    dialog.dismiss();
+                    binding.mobileNo.setError("Mobile number cannot be empty");
+                    return;
+                }
 
                 if (!mobileno.matches("\\d{10}")) {
                     dialog.dismiss();
@@ -111,12 +98,23 @@ public class signup extends AppCompatActivity {
                 }
 
 
+                if (email.isEmpty()) {
+                    dialog.dismiss();
+                    binding.userEmail.setError("Email cannot be empty");
+                    return;
+                }
+
                 if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
                     dialog.dismiss();
                     binding.userEmail.setError("Invalid email format");
                     return;
                 }
 
+                if (password.isEmpty()) {
+                    dialog.dismiss();
+                    binding.password.setError("Password cannot be empty");
+                    return;
+                }
 
                 if (password.length() < 8
                         || !password.matches(".*[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>/\\?].*")
@@ -125,6 +123,8 @@ public class signup extends AppCompatActivity {
                     binding.password.setError("Password must be at least 8 characters long, contain a special character, and include at least one uppercase letter");
                     return;
                 }
+
+
 
 
                 auth.createUserWithEmailAndPassword(email, password)
@@ -149,6 +149,7 @@ public class signup extends AppCompatActivity {
                                     userData.put("pumpstatus", "Off");
                                     userData.put("switch", "Off");
                                     userData.put("mode", "Manual");
+                                    userData.put("feedbacks", "");
 
                                     HashMap<String, Double> locationData = new HashMap<>();
                                     locationData.put("latitude", 0.0);
